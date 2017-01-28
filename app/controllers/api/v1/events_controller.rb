@@ -15,9 +15,37 @@ module API::V1
       @event.update_attributes(event_params)
 
       if @event.save
-        render  json: {organization: @event.to_json}, status: 200
+        if(params.key?(:organization_id))
+          begin
+            @organization = Organization.find(params[:id])
+            @organization.events << @event
+          rescue ActiveRecord::RecordNotFound
+            render json: {:error => "organization-not-found"}, :status => 404
+          rescue Exception=> e #catch all
+            render json: {:error => e}, :status => 400
+          end
+
+        end
+        if((params.key?(:organization_id) && @organization) || !params.key?(:organization_id))
+          render  json: {organization: @event.to_json}, status: 200
+        end
       else
         render json: {errors: @event.errors}, status: 422
+      end
+
+    end
+
+    def show
+      begin
+        @event = Event.find(params[:id])
+      rescue ActiveRecord::RecordNotFound
+        render json: {:error => "not-found"}, :status => 404
+      rescue Exception=> e #catch all
+        render json: {:error => e}, :status => 400
+      end
+
+      if (@event)
+        render  json: {organization: @event.to_json}, status: 200
       end
     end
 

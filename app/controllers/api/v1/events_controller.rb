@@ -1,12 +1,18 @@
 module API::V1
   class Api::V1::EventsController < ApplicationController
 
+    private
+    def event_params
+      params.require(:event).permit(:message, :hostname, :timestamp)
+    end
+
+    public
     def new
     end
 
     def create
       @event = Event.new
-      @event.update_attributes(params)
+      @event.update_attributes(event_params)
 
       if @event.save
         render  json: {organization: @event.to_json}, status: 200
@@ -39,7 +45,7 @@ module API::V1
         @events = Event.all
       end
       if(@events)
-        render json: {organizations: @events.to_json}, status: 200
+        render json: {events: @events.to_json}, status: 200
       end
     end
   end

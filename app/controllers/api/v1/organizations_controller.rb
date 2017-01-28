@@ -13,6 +13,10 @@ module API::V1
         @organization
       end
 
+    def organization_params
+      params.require(:organization).permit(:name)
+    end
+
     public
 
     def new
@@ -20,7 +24,7 @@ module API::V1
 
     def create
       @organization = Organization.new
-      @organization.update_attributes(params)
+      @organization.update_attributes(organization_params)
 
       if @organization.save
         render  json: {organization: @organization.to_json}, status: 200

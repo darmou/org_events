@@ -10,6 +10,8 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
     post "/api/v1/organizations",
          params: { organization: { name: "can create" } }
 
+    post "/api/v1/events",
+        params: { event: { message: "can create", hostname: "localhost", organization_id: 1 } }
   end
 
   test "can I see list of events" do
@@ -20,7 +22,7 @@ class EventsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "can I see list of events for an organization" do
-    get "/api/v1/events/"
+    get "/api/v1/events/?organization_id=1"
     assert_response :success
     events = JSON.parse(response.body)
     assert events.length.is_a? Integer

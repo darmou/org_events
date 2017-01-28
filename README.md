@@ -1,25 +1,28 @@
-# README
+# README For Org Events Project
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+To get this application up and running.
 
 * Ruby version
+ruby 2.3.0p0 (2015-12-25 revision 53290) [x86_64-darwin15]
 
-* System dependencies
-
-* Configuration
+* Install Dependancies
+```
+bundle install
+```
 
 * Database creation
-
-* Database initialization
+```
+rake db:create
+rake db:migrate
+```
 
 * How to run the test suite
+```
+rails test
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+* Starting the application
+```
+rails s
+```
 
-* Deployment instructions
-
-* ...
-# org_events

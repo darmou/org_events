@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  message: MyString
+  hostname: MyString
+  timestamp: 2017-01-27 15:42:42
+
+two:
+  message: MyString
+  hostname: MyString
+  timestamp: 2017-01-27 15:42:42

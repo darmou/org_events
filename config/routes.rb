@@ -4,13 +4,9 @@ Rails.application.routes.draw do
 
   namespace :api, :defaults => { :format => :json } do
     namespace :v1 do
-      resources :organizations
-      resources :events,   controller: 'events' do
-        collection do
-          post :create
-          get :index
-        end
-      end
+      resources :organizations, only: [:show, :index, :create, :destroy]
+      resources :events, only: [:show, :index, :create]
+      
     end
   end
 

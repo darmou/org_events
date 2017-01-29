@@ -20,8 +20,6 @@ module API::V1
 
     public
 
-    def new
-    end
 
     def create
       @organization = Organization.new

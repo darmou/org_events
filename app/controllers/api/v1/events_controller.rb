@@ -7,8 +7,6 @@ module API::V1
     end
 
     public
-    def new
-    end
 
     def create
       @event = Event.new

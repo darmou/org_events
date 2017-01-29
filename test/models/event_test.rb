@@ -1,7 +1,12 @@
 require 'test_helper'
 
-class EventTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+describe Event do
+
+  it "should save with all attributes" do
+    event = Event.new
+    event.message = "Test Message"
+    event.hostname = "localhost"
+    event.timestamp = Time.now.to_i
+    assert event.save
+  end
 end

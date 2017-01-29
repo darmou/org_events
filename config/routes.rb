@@ -9,8 +9,6 @@ Rails.application.routes.draw do
         collection do
           post :create
           get :index
-          #get :events_for_organization
-          #get :groups_for_cards
         end
       end
     end

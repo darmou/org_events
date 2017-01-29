@@ -2,17 +2,18 @@ module API::V1
   class Api::V1::OrganizationsController < ApplicationController
 
     private
-      def test_for_org params
+      def test_for_type id, type
         begin
-          @organization = Organization.find(params[:id])
+          type_obj = type.constantize.find(id)
         rescue ActiveRecord::RecordNotFound
-          render json: {:error => "not-found"}, :status => 404
+          render json: {:error => type.downcase + "-not-found"}, :status => 404
         rescue Exception=> e #catch all
           render json: {:error => e}, :status => 400
         end
-        @organization
+        type_obj
       end
 
+    # Only allow a trusted parameter "white list" through.
     def organization_params
       params.require(:organization).permit(:name)
     end
@@ -27,14 +28,14 @@ module API::V1
       @organization.update_attributes(organization_params)
 
       if @organization.save
-        render  json: {organization: @organization.to_json}, status: 200
+        render  json: {organization: @organization.to_json}, status: 201
       else
         render json: {errors: @organization.errors}, status: 422
       end
     end
 
     def show
-      @organization = test_for_org params
+      @organization =  test_for_type params[:id], "Organization"
 
       if (@organization)
         render  json: {organization: @organization.to_json}, status: 200
@@ -52,7 +53,7 @@ module API::V1
       if (@organization)
         id = @organization.id
         @organization.destroy
-        render  json: {message: "organizanion with id #{id} destroyed".to_json}, status: 200
+        render  json: {message: "organizanion with id #{id} destroyed".to_json}, status: 204
       end
     end
   end

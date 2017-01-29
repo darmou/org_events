@@ -1,20 +1,31 @@
 require 'test_helper'
 
 class OrganizationsControllerTest < ActionDispatch::IntegrationTest
-  test "can I see list of organisations" do
-    get "/api/v1/organizations/"
-    assert_response :success
-    organizations = JSON.parse(response.body)
-    assert organizations.length.is_a? Integer
+  let(:organization) { organizations :one }
+
+  it "gets index" do
+    get  "/api/v1/organizations"
+    value(response).must_be :success?
   end
 
+  it "creates organization" do
+    expect {
+      post  "/api/v1/organizations", params: { organization: { name: "test org" } }
+    }.must_change "Organization.count"
 
-  test "can create an organization" do
+    value(response.status).must_equal 201
+  end
 
+  it "shows organization" do
+    get  "/api/v1/organizations/" + organization.id.to_s
+    value(response).must_be :success?
+  end
 
-    post "/api/v1/organizations",
-         params: { organization: { name: "can create" } }
+  it "destroys organization" do
+    expect {
+      delete "/api/v1/organizations/" + organization.id.to_s
+    }.must_change "Organization.count", -1
 
-    assert_response :success
+    value(response.status).must_equal 204
   end
 end

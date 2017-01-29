@@ -1,10 +1,9 @@
-require 'test_helper'
+require "test_helper"
 
+describe Organization do
+  let(:organization) { Organization.new }
 
-class OrganizationTest < ActiveSupport::TestCase
-
-  test "Organization must have a name" do
-    organization = Organization.new
-    assert_not organization.save
+  it "must be valid" do
+    value(organization).must_be :valid?
   end
 end

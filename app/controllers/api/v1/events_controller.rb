@@ -3,7 +3,7 @@ module API::V1
 
     private
     def event_params
-      params.require(:event).permit(:message, :hostname, :timestamp)
+      params.require(:event).permit(:message, :hostname, :last_n, :timestamp, :organization_id)
     end
 
     public
@@ -15,9 +15,9 @@ module API::V1
       @event.update_attributes(event_params)
 
       if @event.save
-        if(params.key?(:organization_id))
+        if(event_params.has_key?(:organization_id))
           begin
-            @organization = Organization.find(params[:id])
+            @organization = Organization.find(event_params[:organization_id])
             @organization.events << @event
           rescue ActiveRecord::RecordNotFound
             render json: {:error => "organization-not-found"}, :status => 404
@@ -26,8 +26,8 @@ module API::V1
           end
 
         end
-        if((params.key?(:organization_id) && @organization) || !params.key?(:organization_id))
-          render  json: {organization: @event.to_json}, status: 200
+        if((event_params.has_key?(:organization_id) && @organization) || !event_params.has_key?(:organization_id))
+          render  json: {organization: @event.to_json}, status: 201
         end
       else
         render json: {errors: @event.errors}, status: 422

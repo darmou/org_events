@@ -46,7 +46,7 @@ module API::V1
     end
 
     def destroy
-      @organization = test_for_org params
+      @organization = test_for_type params[:id], "Organization"
 
       if (@organization)
         id = @organization.id

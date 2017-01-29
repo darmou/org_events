@@ -1,9 +1,8 @@
 require "test_helper"
 
 describe Organization do
-  let(:organization) { Organization.new }
-
-  it "must be valid" do
-    value(organization).must_be :valid?
+  it "should have a name" do
+    organization = Organization.new
+    assert_not organization.save
   end
 end
